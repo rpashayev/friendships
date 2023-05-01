@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Friendship</title>
+</head>
+<body>
+    <div class="container col-12 my-3">
+        <div class="row justify-content-between gx-0">
+            <div class="card col-5 bg-dark text-warning">
+                <div class="card-body">
+                    <h2 class="card-title "> Friendship</h2>
+                    <table class="table table-stripped text-warning">
+                        <thead class="table-warning">
+                            <tr>
+                                <th>User</th>
+                                <th>Friend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for friendship in friendships %}
+                                <tr>
+                                    <th>{{ friendship.first_name }} {{ friendship.last_name }}</th>
+                                    {% for friend in friendship.friends %}
+                                        {% if friend.first_name != None %}
+                                            <th>{{ friend.first_name }} {{ friend.last_name }}</th>
+                                        {% endif %}        
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="card col-12 bg-light">
+                    <div class="card-body">
+                        <h2 class="card-title text-primary">Add User</h2>
+                        <form class="text-dark" action="/users/add" method="post">
+                            <label for="first_name" class="form-label">First name:</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name">
+                            <label for="last_name" class="form-label">Last name::</label>
+                            <input type="text" class="form-control" name="last_name" id="last_name">
+                            <button type="submit" class="btn btn-primary mt-2">Add new</button>
+                        </form>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card col-12 bg-light mt-2">
+                    <div class="card-body">
+                        <h2 class="card-title text-primary">Create friendship</h2>
+                        <p class="text-danger">{{ session['error_msg'] }}</p>
+                        <form class="text-dark" action="/users/new/friendship" method="post">
+                        <select class="form-control mb-2" name="user_id" id="user_id">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select class="form-control mb-2" name="friend_id" id="friend_id">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
